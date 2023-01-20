@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars,require-await
 import pov from "@fastify/view";
 import multipart from "@fastify/multipart";
 import formbody from "@fastify/formbody";
@@ -38,11 +37,11 @@ export default async (server, { hdbCore, logger }) => {
       // try a request
       hdbCore.preValidation[1](req, resp, (error) => {
         if (error)
-          // return a redirect to the login upon error
+            // return a redirect to the login upon error
           return resp
-            .code(302)
-            .header("Location", "login.html")
-            .send("no dogs for you!");
+              .code(302)
+              .header("Location", "login.html")
+              .send("no dogs for you!");
         // callback if successful
         done();
       });
@@ -79,10 +78,12 @@ export default async (server, { hdbCore, logger }) => {
         operation: "search_by_hash",
         schema: "dev",
         table: "dog",
-        hash_values: [request.params.id],
+        hash_values: [+request.params.id],
         get_attributes: ["*"],
       };
-      let [dog] = await hdbCore.requestWithoutAuthentication(request);
+      let response = await hdbCore.requestWithoutAuthentication(request);
+
+      let [dog] = response
       return reply.view("dog.ejs", { dog });
     },
   });
@@ -98,10 +99,11 @@ export default async (server, { hdbCore, logger }) => {
         operation: "search_by_hash",
         schema: "dev",
         table: "dog",
-        hash_values: [request.params.id],
+        hash_values: [+request.params.id],
         get_attributes: ["*"],
       };
       let [dog] = await hdbCore.requestWithoutAuthentication(request);
+      console.log("id route, sanity check", dog);
       dog = Object.assign({}, dog); // copy it
       // get the uploaded image
       const form_data = await request.file();
@@ -117,11 +119,13 @@ export default async (server, { hdbCore, logger }) => {
         table: "dog",
         records: [dog],
       };
+
       let result = await hdbCore.requestWithoutAuthentication(request);
+      console.log("id route, post update", dog);
       reply
-        .code(303)
-        .header("Location", "dog" + request.params.id)
-        .send(result);
+          .code(303)
+          .header("Location", request.params.id)
+          .send(result);
     },
   });
 
@@ -136,11 +140,12 @@ export default async (server, { hdbCore, logger }) => {
         operation: "search_by_hash",
         schema: "dev",
         table: "dog",
-        hash_values: [request.params.id],
+        hash_values: [+request.params.id],
         get_attributes: ["image", "imageType"],
       };
       let [dog] = await hdbCore.requestWithoutAuthentication(request);
-      reply.code(200).header("Content-Type", dog.imageType).send(dog.image);
+      console.log("RESPONSE ATTRIBUTES", dog);
+      reply.code(200).header("Content-Type", dog.imageType).send(Buffer.from(dog.image));
     },
   });
 
@@ -155,9 +160,9 @@ export default async (server, { hdbCore, logger }) => {
     });
     let result = await hdbCore.request(request);
     reply
-      .setCookie("auth", result.operation_token)
-      .code(303)
-      .header("Location", "dogs")
-      .send(result);
+        .setCookie("auth", result.operation_token)
+        .code(303)
+        .header("Location", "dogs")
+        .send(result);
   });
 };

@@ -10,8 +10,18 @@
 <body>
   <div id="app">
     <div id="app-content">
-      <a href="/test/dogs"><img width="64" height="64" src="/resources/img/logo.png" /></a><br /><br />
+      <div class="navbar">
+        <a href="/binary/dogs" class="home-link">Home</a>
+      </div>
+      <div class="header">
+        <h1>Dogs of HarperDB</h1>
+        <img width="64" height="64" src="/resources/img/logo.png" /><br /><br />
+      </div>
+
+<!--      <a href="/test/dogs"><img width="64" height="64" src="/resources/img/logo.png" /></a><br /><br />-->
+
       <form method="post" enctype="multipart/form-data">
+        <legend>Update Dog</legend>
         <div class="dog-property">Name: <%= dog.dog_name %></div>
         <% if (dog.imageType) { %>
           <img class="dog-image" src="<%= dog.id %>/image"/>

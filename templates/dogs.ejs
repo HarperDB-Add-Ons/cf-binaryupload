@@ -10,14 +10,17 @@
 <body>
   <div id="app">
     <div id="app-content">
-      <img width="64" height="64" src="/resources/img/logo.png" /><br /><br />
+      <div class="header">
+        <h1>Dogs of HarperDB</h1>
+        <img width="64" height="64" src="/resources/img/logo.png" /><br /><br />
+      </div>
       <ul>
         <% for (let dog of dogs) { %>
           <li class="dog-listing">
-            <a href="dog/<%= dog.id %>"><%= dog.dog_name %>, <%= dog.age %> years old</a>
-            <% if (dog.imageType) { %>
-              <img class="dog-thumbnail" src="dog/<%= dog.id %>/image"/>
-            <% } %>
+            <a href="dog/<%= dog.id %>"><%= dog.dog_name %> - <%= dog.age %> years old <% if (dog.imageType) { %>
+                <img class="dog-thumbnail" src="dog/<%= dog.id %>/image"/>
+              <% } %></a>
+
           </li>
         <% } %>
       </ul>
