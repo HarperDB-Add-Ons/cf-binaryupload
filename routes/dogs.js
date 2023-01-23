@@ -103,7 +103,6 @@ export default async (server, { hdbCore, logger }) => {
         get_attributes: ["*"],
       };
       let [dog] = await hdbCore.requestWithoutAuthentication(request);
-      console.log("id route, sanity check", dog);
       dog = Object.assign({}, dog); // copy it
       // get the uploaded image
       const form_data = await request.file();
@@ -121,7 +120,6 @@ export default async (server, { hdbCore, logger }) => {
       };
 
       let result = await hdbCore.requestWithoutAuthentication(request);
-      console.log("id route, post update", dog);
       reply
           .code(303)
           .header("Location", request.params.id)
@@ -144,7 +142,6 @@ export default async (server, { hdbCore, logger }) => {
         get_attributes: ["image", "imageType"],
       };
       let [dog] = await hdbCore.requestWithoutAuthentication(request);
-      console.log("RESPONSE ATTRIBUTES", dog);
       reply.code(200).header("Content-Type", dog.imageType).send(Buffer.from(dog.image));
     },
   });
