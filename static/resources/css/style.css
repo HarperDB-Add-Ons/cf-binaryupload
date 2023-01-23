@@ -48,8 +48,8 @@ body {
 .dog-listing a {
   color: #fff;
   text-decoration: none;
-  display: flex;
-  justify-content: space-evenly;
+  display: grid;
+  grid-template: [row1-start] "name name age age pic pic" [row1-end];
 }
 
 li {
@@ -68,7 +68,6 @@ form {
   width: 8rem;
 }
 .dog-thumbnail {
-  float: right;
   width: 3rem;
 }
 .dog-property {
@@ -83,7 +82,7 @@ form {
   display: block;
   color: #fff;
   text-align: center;
-  padding: 14px 16px;
+  padding: 1rem .5rem 2.5rem ;
   text-decoration: none;
 }
 .navbar a:hover {
